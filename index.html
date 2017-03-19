@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://use.fontawesome.com/1be9deb9f2.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+
+<body ng-app="myApp">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 class="page-header">Main Page</h1></div>
+      <div class="col-xs-4">
+        <input type="text" placeholder="search in names" class="form-control" ng-model="search.name.first">
+      </div>
+      <!--popup window---------------------------------------------->
+      <div class="col-xs-8">
+        <a href="#myModal" class="btn btn-primary" data-toggle="modal">Show chart</a>
+        <div id="myModal" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><b>Gender users</b></h4>
+              </div>
+              <div class="modal-body">
+                <div id="piechart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end popup window---------------------------------------------->
+      <div class="container" ng-controller="getData">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="col-xs-1">
+              <div id="datamale">{{male}}</div>
+              <div id="datafemale">{{female}}</div>
+            </div>
+            <div class="col-xs-2"><b>Last</b></div>
+            <div class="col-xs-2"><b>First</b></div>
+            <div class="col-xs-2"><b>Username</b></div>
+            <div class="col-xs-2"><b>Phone</b></div>
+            <div class="col-xs-2"><b>Location</b></div>
+            <div class="col-xs-1"></div>
+
+            <div ng-repeat="person in persons | filter:search" ng-click="trigger.visible=!trigger.visible">
+              <div class="col-xs-12 n{{$index}}">
+                <div class="row">
+                  <div class="col-xs-1"><img class="img-circle img-thumbnail" ng-src="{{person.picture.thumbnail}}"></div>
+                  <div class="col-xs-2 text-capitalize">{{person.name.last}}</div>
+                  <div class="col-xs-2 text-capitalize">{{person.name.first}}</div>
+                  <div class="col-xs-2">{{person.login.username}}</div>
+                  <div class="col-xs-2">{{person.phone}}</div>
+                  <div class="col-xs-2">{{person.location.state}}</div>
+                  <div class="col-xs-1">
+                    <div ng-hide="trigger.visible"><i class="glyphicon glyphicon-plus"></i></div>
+                    <div ng-show="trigger.visible"><i class="glyphicon glyphicon-minus"></i></div>
+                  </div>
+                  <!---dropping part-------------------------------------------->
+                  <div class="col-xs-12" ng-show="trigger.visible">
+                    <div class="row">
+                      <div class="col-xs-1"></div>
+                      <div class="col-xs-11">
+                        <div class="row">
+                          <div class="col-xs-12">
+                            <h1 class="text-capitalize">{{person.name.first}} <i class="fa fa-{{person.gender}}"></i></h1>
+                          </div>
+                          <div class="col-xs-3">
+                            <p><b>Username</b> {{person.login.username}}</p>
+                            <p><b>Registered</b> {{formatDate(person.registered) | date:'MM/dd/yyyy'}}</p>
+                            <p><b>Email</b> {{person.email}}</p>
+                          </div>
+                          <div class="col-xs-3">
+                            <p><b>Adress</b> {{person.location.street}}</p>
+                            <p><b>City</b> {{person.location.city}}</p>
+                            <p><b>Zip Code</b> {{person.location.postcode}}</p>
+                          </div>
+                          <div class="col-xs-3">
+                            <p><b>Birthday</b> {{formatDate(person.dob) | date:'MM/dd/yyyy'}}</p>
+                            <p><b>Phone</b> {{person.phone}}</p>
+                            <p><b>Cell</b> {{person.cell}}</p>
+                          </div>
+                          <div class="col-xs-3">
+                            <img class="img-circle img-thumbnail" ng-src="{{person.picture.large}}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!---end dropping part-------------------------------------------->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
